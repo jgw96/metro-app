@@ -8,7 +8,7 @@ export async function getNearbyStops(locationString: string) {
     const data = await response.json();
     console.log(data);
 
-    return data;
+    return data.results;
 }
 
 const getMetroAreaID = async (locationString: string) => {

@@ -4,11 +4,14 @@ import { LitElement, css, html, customElement, internalProperty } from 'lit-elem
 import '@pwabuilder/pwainstall';
 import { getNearbyStops } from '../services/metro';
 
+import '../components/stop-list';
+
 @customElement('app-home')
 export class AppHome extends LitElement {
 
   @internalProperty() gotLocation: boolean = false;
   @internalProperty() location: string | null = null;
+  @internalProperty() nearbyStops: any[] | null = null;
 
   static get styles() {
     return css`
@@ -85,7 +88,11 @@ export class AppHome extends LitElement {
   async getNearby() {
     if (this.location) {
       const stops = await getNearbyStops(this.location);
-      console.log(stops);
+      console.log('stops', stops)
+
+      if (stops && stops.length > 0) {
+        this.nearbyStops = [...stops];
+      }
     }
   }
 
@@ -106,7 +113,7 @@ export class AppHome extends LitElement {
         ${!this.gotLocation ? html`<div id="welcomeBar">
           <h2>Allow location access to find your local transit options</h2>
           <fast-button @click="${() => this.setLocation()}">Get My Location</fast-button>
-        </div>` : null}
+        </div>` : this.nearbyStops ? html`<stop-list .stops="${this.nearbyStops}"></stop-list>` : null}
       
         <pwa-install>Install PWA Starter</pwa-install>
       </div>
