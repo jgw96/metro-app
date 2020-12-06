@@ -1,14 +1,14 @@
-import { LitElement, css, html, customElement, property } from 'lit-element';
+import { LitElement, css, html, customElement, internalProperty } from 'lit-element';
 
 // For more info on the @pwabuilder/pwainstall component click here https://github.com/pwa-builder/pwa-install
 import '@pwabuilder/pwainstall';
+import { getNearbyStops } from '../services/metro';
 
 @customElement('app-home')
 export class AppHome extends LitElement {
 
-  // For more information on using properties in lit-element
-  // check out this link https://lit-element.polymer-project.org/guide/properties#declare-with-decorators
-  @property() message: string = "Welcome!";
+  @internalProperty() gotLocation: boolean = false;
+  @internalProperty() location: string | null = null;
 
   static get styles() {
     return css`
@@ -17,6 +17,7 @@ export class AppHome extends LitElement {
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        text-align: center;
       }
 
       #welcomeBar fast-card {
@@ -68,6 +69,26 @@ export class AppHome extends LitElement {
     console.log('This is your home page');
   }
 
+  async setLocation() {
+    navigator.geolocation.getCurrentPosition(async (pos: Position) => {
+      console.log(pos);
+
+      this.gotLocation = true;
+      this.location = `${pos.coords.latitude},${pos.coords.longitude}`;
+      console.log(this.location);
+
+      await this.getNearby();
+
+    })
+  }
+
+  async getNearby() {
+    if (this.location) {
+      const stops = await getNearbyStops(this.location);
+      console.log(stops);
+    }
+  }
+
   share() {
     if ((navigator as any).share) {
       (navigator as any).share({
@@ -82,48 +103,10 @@ export class AppHome extends LitElement {
     return html`
       <div>
       
-        <div id="welcomeBar">
-          <fast-card id="welcomeCard">
-      
-            <h2>${this.message}</h2>
-
-            <p>
-              For more information on the PWABuilder pwa-starter, check out the <fast-anchor href="https://github.com/pwa-builder/pwa-starter/blob/master/README.md" appearance="hypertext">README</fast-anchor>.
-            </p>
-      
-            <p>
-              Welcome to the <fast-anchor href="https://pwabuilder.com" appearance="hypertext">PWABuilder</fast-anchor> pwa-starter!
-      
-              Be sure to head back to <fast-anchor href="https://pwabuilder.com" appearance="hypertext">PWABuilder</fast-anchor> when you are ready to ship this PWA to
-              the
-              Microsoft, Google Play and Samsung Galaxy stores!
-            </p>
-      
-            ${'share' in navigator ? html`<fast-button appearance="primary" @click="${this.share}">Share this Starter!</fast-button>` : null}
-          </fast-card>
-
-          <fast-card id="infoCard">
-            <h2>Technology Used</h2>
-
-            <ul>
-              <li>
-                <fast-anchor href="https://www.typescriptlang.org/" appearance="hypertext">TypeScript</fast-anchor>
-              </li>
-
-              <li>
-                <fast-anchor href="https://lit-element.polymer-project.org/" appearance="hypertext">lit-element</fast-anchor>
-              </li>
-
-              <li>
-                <fast-anchor href="https://www.fast.design/docs/components/getting-started" appearance="hypertext">FAST Components</fast-anchor>
-              </li>
-
-              <li>
-                <fast-anchor href="https://vaadin.github.io/vaadin-router/vaadin-router/demo/#vaadin-router-getting-started-demos" appearance="hypertext">Vaadin Router</fast-anchor>
-              </li>
-            </ul>
-          </fast-card>
-        </div>
+        ${!this.gotLocation ? html`<div id="welcomeBar">
+          <h2>Allow location access to find your local transit options</h2>
+          <fast-button @click="${() => this.setLocation()}">Get My Location</fast-button>
+        </div>` : null}
       
         <pwa-install>Install PWA Starter</pwa-install>
       </div>
