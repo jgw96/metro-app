@@ -16,7 +16,7 @@ export class AppHeader extends LitElement {
         padding-right: 16px;
         background: var(--app-color-primary);
         color: white;
-        height: 4em;
+        height: 3.6em;
       }
 
       header h1 {
@@ -24,6 +24,16 @@ export class AppHeader extends LitElement {
         margin-bottom: 0;
         font-size: 20px;
         font-weight: bold;
+      }
+
+      @media(prefers-color-scheme: light) {
+        header h1 {
+          color: var(--accent-fill-rest);
+        }
+
+        header {
+          background: white;
+        }
       }
     `;
   }

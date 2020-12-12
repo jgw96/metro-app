@@ -11,6 +11,8 @@ import { getRealTime } from "../services/metro";
 @customElement("app-realtime")
 export class AppRealtime extends LitElement {
   @internalProperty() details: any | null;
+  @internalProperty() loading: boolean = true;
+  @internalProperty() stopID: string | null = null;
 
   static get styles() {
     return css`
@@ -91,10 +93,26 @@ export class AppRealtime extends LitElement {
           width: 100%;
       }
 
+      fast-progress-ring {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
       @media(min-width: 900px) {
           #none img {
               height: 20em;
           }
+      }
+
+      @media(prefers-color-scheme: light) {
+        li {
+          color: black;
+          background: white;
+        }
+
+        #toolbar {
+          background: white;
+        }
       }
     `;
   }
@@ -104,14 +122,32 @@ export class AppRealtime extends LitElement {
   }
 
   async firstUpdated() {
-    const search = new URLSearchParams(location.search);
-    const id = search.get("id");
+    this.loading = true;
 
-    if (id) {
-      const detailsData = await getRealTime(id);
+    const search = new URLSearchParams(location.search);
+    this.stopID = search.get("id");
+
+    if (this.stopID) {
+      const detailsData = await getRealTime(this.stopID);
       console.log(detailsData);
       this.details = detailsData;
+
+      this.kickOffLiveUpdates();
     }
+
+    this.loading = false;
+  }
+
+  kickOffLiveUpdates() {
+    setInterval(() => {
+      (window as any).requestIdleCallback(async () => {
+        if (this.stopID) {
+          const detailsData = await getRealTime(this.stopID);
+          console.log(detailsData);
+          this.details = detailsData;
+        }
+      })
+    }, 60000)
   }
 
   goBack() {
@@ -125,10 +161,10 @@ export class AppRealtime extends LitElement {
     return html`
       <div>
         ${this.details && this.details.length > 0
-          ? html`
+        ? html`
               <ul>
                 ${this.details.map((data: any) => {
-                  return html`
+          return html`
                     <li>
                       <h4>${data.line.lineNumber}</h4>
 
@@ -137,17 +173,19 @@ export class AppRealtime extends LitElement {
                       <span>${data.arrivalMinutes} minutes away</span>
                     </li>
                   `;
-                })}
+        })}
               </ul>
             `
-          : html`<div id="none">
+        : !this.loading ? html`<div id="none">
               <h2>No arrivals soon</h2>
 
               <img src="/assets/bus.svg" alt="image of bus">
-          </div>`}
+          </div>` : null}
 
         <div id="toolbar">
           <fast-button @click="${() => this.goBack()}">Back</fast-button>
+
+          <fast-progress-ring></fast-progress-ring>
         </div>
       </div>
     `;

@@ -37,6 +37,8 @@ export class AppHome extends LitElement {
         position: absolute;
         bottom: 16px;
         right: 16px;
+
+        --install-button-color: var(--accent-fill-rest);
       }
 
       button {
@@ -69,12 +71,12 @@ export class AppHome extends LitElement {
 
   async firstUpdated() {
     const loc = getSavedLoc();
-    
+
     if (loc) {
       this.gotLocation = true;
       this.location = loc;
 
-      await this.getNearby();
+     await this.getNearby();
     }
   }
 
@@ -117,9 +119,9 @@ export class AppHome extends LitElement {
         ${!this.gotLocation ? html`<div id="welcomeBar">
           <h2>Allow location access to find your local transit options</h2>
           <fast-button @click="${() => this.setLocation()}">Get My Location</fast-button>
-        </div>` : this.nearbyStops ? html`<stop-list .stops="${this.nearbyStops}"></stop-list>` : null}
+        </div>` : this.nearbyStops ? html`<stop-list .stops="${this.nearbyStops}"></stop-list>` : html`<stop-list></stop-list>`}
       
-        <pwa-install>Install PWA Starter</pwa-install>
+        <pwa-install>Install Metro</pwa-install>
       </div>
     `;
   }

@@ -1,5 +1,7 @@
 import { Router } from '@vaadin/router';
 import { LitElement, css, html, customElement, internalProperty } from 'lit-element';
+import { styleMap } from 'lit-html/directives/style-map';
+
 import { getStopDetails } from '../services/metro';
 
 
@@ -38,7 +40,6 @@ export class AppAbout extends LitElement {
       }
 
       li {
-        background: #212121;
         border-radius: calc(var(--corner-radius) * 1px);
         box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))), 0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));
         padding: 12px;
@@ -68,6 +69,25 @@ export class AppAbout extends LitElement {
       #toolbar #realTime {
         background: var(--accent-fill-rest);
       }
+
+      fast-skeleton {
+        height: 2em;
+      }
+
+      #loadingDetail fast-skeleton {
+        height: 1em;
+        width: 3em;
+      }
+
+      @media(prefers-color-scheme: light) {
+        li {
+          color: white;
+        }
+
+        #toolbar {
+          background: white;
+        }
+      }
     `;
   }
 
@@ -93,8 +113,7 @@ export class AppAbout extends LitElement {
   render() {
     return html`
       <div>
-        ${
-          this.details ? html`
+        ${this.details ? html`
             <h2>${this.details.stop.stopName}</h2>
 
             <section>
@@ -108,27 +127,37 @@ export class AppAbout extends LitElement {
               <h3>Lines</h3>
 
               <ul>
-                ${
-                  this.details.lineGroups.map((line: any) => {
-                    if (line) {
-                      return html`
-                        <li>
+                ${this.details.lineGroups.map((line: any) => {
+      if (line) {
+        return html`
+                        <li style=${styleMap({
+          background: `#${line.color}`
+        })}>
                           <h4>${line.lineNumber}</h4>
                           <span>Destination: ${line.caption1}</span>
                         </li>
                       `
-                    }
-                    else {
-                      return null;
-                    }
-                  })
-                }
+      }
+      else {
+        return null;
+      }
+    })
+        }
               </ul>
             </section>
             
 
-          ` : null
-        }
+          ` : html`
+          <h2><fast-skeleton shimmer shape="rect"></fast-skeleton></h2>
+
+          <section>
+              <h3 id="detailsHeader"><fast-skeleton shimmer shape="rect"></fast-skeleton></h3>
+
+              <span><fast-skeleton shimmer shape="rect"></fast-skeleton></span>
+              <span><fast-skeleton shimmer shape="rect"></fast-skeleton></span>
+            </section>
+          `
+      }
 
         <div id="toolbar">
           <fast-button @click="${() => this.goBack()}">Back</fast-button>

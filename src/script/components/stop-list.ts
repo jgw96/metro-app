@@ -31,6 +31,25 @@ export class StopList extends LitElement {
         align-items: center;
         margin-top: 18px;
       }
+
+      fast-card .cardActions fast-anchor {
+        background-color: var(--accent-fill-rest);
+      }
+
+      #loadingCard h3 fast-skeleton {
+        height: 2em;
+      }
+
+      #loadingCard .cardActions fast-skeleton {
+        height: 2em;
+        width: 4em;
+      }
+
+      @media(prefers-color-scheme: light) {
+          fast-card {
+            background: white;
+          }
+      }
     `;
   }
 
@@ -39,17 +58,16 @@ export class StopList extends LitElement {
   }
 
   firstUpdated() {
-      console.log(this.stops);
+    console.log(this.stops);
   }
 
   render() {
     return html`
       <h2>Nearby Stops</h2>
 
-      <ul>
-        ${
-            this.stops?.map((stop) => {
-                return html`
+      ${this.stops.length > 0 ? html`<ul>
+        ${this.stops?.map((stop) => {
+      return html`
                   <fast-card>
                     <h3>${stop.objectDetails.stopName}</h3>
 
@@ -58,9 +76,33 @@ export class StopList extends LitElement {
                     </div>
                   </fast-card>
                 `
-            })
+    })
         }
-      </ul>
+      </ul>` : html`<ul>
+        <fast-card id="loadingCard">
+          <h3><fast-skeleton shimmer shape="rect"></fast-skeleton></h3>
+
+          <div class="cardActions">
+            <fast-skeleton shimmer shape="rect"></fast-skeleton>
+          </div>
+        </fast-card>
+
+        <fast-card id="loadingCard">
+          <h3><fast-skeleton shimmer shape="rect"></fast-skeleton></h3>
+
+          <div class="cardActions">
+            <fast-skeleton shimmer shape="rect"></fast-skeleton>
+          </div>
+        </fast-card>
+
+        <fast-card id="loadingCard">
+          <h3><fast-skeleton shimmer shape="rect"></fast-skeleton></h3>
+
+          <div class="cardActions">
+            <fast-skeleton shimmer shape="rect"></fast-skeleton>
+          </div>
+        </fast-card>
+      </ul>`}
     `;
   }
 }
