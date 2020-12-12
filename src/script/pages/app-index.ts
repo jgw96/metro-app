@@ -73,6 +73,13 @@ export class AppIndex extends LitElement {
             action: async () => {
               await import('./app-about.js');
             },
+          },
+          {
+            path: "/realtime",
+            component: "app-realtime",
+            action: async () => {
+              await import('./app-realtime.js');
+            },
           }
         ]
       } as any)

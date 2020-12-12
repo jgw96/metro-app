@@ -25,16 +25,6 @@ export class AppHeader extends LitElement {
         font-size: 20px;
         font-weight: bold;
       }
-
-      nav {
-        width: 9em;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      nav fast-anchor {
-        margin-left: 10px;
-      }
     `;
   }
 
@@ -46,11 +36,6 @@ export class AppHeader extends LitElement {
     return html`
       <header>
         <h1>${this.title}</h1>
-
-        <nav>
-          <fast-anchor href="./" appearance="button">Home</fast-anchor>
-          <fast-anchor href="./about" appearance="button">About</fast-anchor>
-        </nav>
       </header>
     `;
   }

@@ -5,6 +5,7 @@ import '@pwabuilder/pwainstall';
 import { getNearbyStops } from '../services/metro';
 
 import '../components/stop-list';
+import { getLocation, getSavedLoc } from '../utils/location';
 
 @customElement('app-home')
 export class AppHome extends LitElement {
@@ -66,23 +67,26 @@ export class AppHome extends LitElement {
     super();
   }
 
-  firstUpdated() {
-    // this method is a lifecycle even in lit-element
-    // for more info check out the lit-element docs https://lit-element.polymer-project.org/guide/lifecycle
-    console.log('This is your home page');
+  async firstUpdated() {
+    const loc = getSavedLoc();
+    
+    if (loc) {
+      this.gotLocation = true;
+      this.location = loc;
+
+      await this.getNearby();
+    }
   }
 
   async setLocation() {
-    navigator.geolocation.getCurrentPosition(async (pos: Position) => {
-      console.log(pos);
+    const locData = await getLocation();
 
+    if (locData) {
       this.gotLocation = true;
-      this.location = `${pos.coords.latitude},${pos.coords.longitude}`;
-      console.log(this.location);
+      this.location = locData;
 
       await this.getNearby();
-
-    })
+    }
   }
 
   async getNearby() {

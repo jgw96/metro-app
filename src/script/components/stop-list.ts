@@ -24,6 +24,13 @@ export class StopList extends LitElement {
           margin-top: 0;
           margin-bottom: 0;
       }
+
+      fast-card .cardActions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 18px;
+      }
     `;
   }
 
@@ -45,6 +52,10 @@ export class StopList extends LitElement {
                 return html`
                   <fast-card>
                     <h3>${stop.objectDetails.stopName}</h3>
+
+                    <div class="cardActions">
+                      <fast-anchor .href="${`/about?id=${stop.id}`}" appearance="button">Details</fast-anchor>
+                    </div>
                   </fast-card>
                 `
             })
