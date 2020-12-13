@@ -6,4 +6,14 @@ self.addEventListener("message", (event) => {
   }
 });
 
+workbox.routing.registerRoute(
+  ({ url }) => url.href.includes("@microsoft/fast-components"),
+  new workbox.strategies.CacheFirst(),
+);
+
+workbox.routing.registerRoute(
+  ({ url }) => url.href.includes("@pwabuilder"),
+  new workbox.strategies.CacheFirst(),
+);
+
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
