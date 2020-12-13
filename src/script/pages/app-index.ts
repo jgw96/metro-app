@@ -16,8 +16,8 @@ export class AppIndex extends LitElement {
         padding: 16px;
       }
 
-      #routerOutlet > * {
-        width: 100% !important;
+      #routerOutlet app-home, #routerOutlet app-about, #routerOutlet app-index, #routerOutlet app-line, #routerOutlet app-realtime {
+        display: block;
       }
 
       #routerOutlet > .leaving {
@@ -79,6 +79,13 @@ export class AppIndex extends LitElement {
             component: "app-realtime",
             action: async () => {
               await import('./app-realtime.js');
+            },
+          },
+          {
+            path: "/linedetails",
+            component: "app-line",
+            action: async () => {
+              await import('./app-line.js');
             },
           }
         ]

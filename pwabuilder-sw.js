@@ -16,4 +16,20 @@ workbox.routing.registerRoute(
   new workbox.strategies.CacheFirst(),
 );
 
+workbox.routing.registerRoute(
+  ({ url }) => url.href.includes('https://atlas.microsoft.com/mobility/'),
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'offline-data',
+    plugins: [
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 19 * 60, // 5 minutes
+      }),
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
+);
+
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);

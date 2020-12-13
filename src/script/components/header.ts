@@ -28,7 +28,7 @@ export class AppHeader extends LitElement {
 
       @media(prefers-color-scheme: light) {
         header h1 {
-          color: var(--accent-fill-rest);
+          color: #c01754;
         }
 
         header {

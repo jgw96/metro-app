@@ -110,6 +110,11 @@ export class AppAbout extends LitElement {
     Router.go("/");
   }
 
+  lineDetails(id: string) {
+    console.log(id);
+    Router.go(`/linedetails?id=${id}`)
+  }
+
   render() {
     return html`
       <div>
@@ -130,7 +135,7 @@ export class AppAbout extends LitElement {
                 ${this.details.lineGroups.map((line: any) => {
       if (line) {
         return html`
-                        <li style=${styleMap({
+                        <li @click="${() => this.lineDetails(line.lineGroupId)}" style=${styleMap({
           background: `#${line.color}`
         })}>
                           <h4>${line.lineNumber}</h4>

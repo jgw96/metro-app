@@ -32,6 +32,13 @@ export const getRealTime = async (id: string) => {
     return data.results;
 }
 
+export const getLineDetails = async (id: string) => {
+  const response = await fetch(`https://atlas.microsoft.com/mobility/transit/line/json?api-version=1.0&query=${id}&subscription-key=${subKey}`);
+  const data = await response.json();
+
+  return data;
+}
+
 const getMetroAreaID = async (locationString: string) => {
   const response = await fetch(
     `https://atlas.microsoft.com/mobility/metroArea/id/json?api-version=1.0&query=${locationString}&subscription-key=${subKey}`
