@@ -1,3 +1,4 @@
+import { Router } from '@vaadin/router';
 import { LitElement, css, html, customElement, property } from 'lit-element';
 
 declare var atlas: any;
@@ -25,6 +26,8 @@ export class StopList extends LitElement {
           margin-bottom: 12px;
           padding: 12px;
           width: 100%;
+
+          cursor: pointer;
       }
 
       fast-card h3 {
@@ -79,6 +82,10 @@ export class StopList extends LitElement {
     console.log(this.stops);
   }
 
+  doDetails(route: string) {
+    Router.go(route);
+  }
+
   render() {
     return html`
 
@@ -87,7 +94,7 @@ export class StopList extends LitElement {
       ${this.stops.length > 0 ? html`<ul>
         ${this.stops?.map((stop) => {
       return html`
-                  <fast-card>
+                  <fast-card @click="${() => this.doDetails(`/about?id=${stop.id}`)}">
                     <h3>${stop.objectDetails.stopName}</h3>
 
                     <div class="cardActions">
