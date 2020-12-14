@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf dist/ && tsc && rollup -c",
+    "build": "tsc && rollup --config rollup.dev.config.js && rimraf dist/ && tsc && rollup -c",
     "build:watch": "tsc --watch",
     "build:dev": "tsc",
     "start": "concurrently \"tsc --watch\" \"rollup --config rollup.dev.config.js --watch\" \"web-dev-server --node-resolve --root-dir dev/ --open\"",
