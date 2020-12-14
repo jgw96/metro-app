@@ -21,6 +21,7 @@
     "lit-element": "^2.4.0",
     "workbox-cacheable-response": "^6.0.2",
     "workbox-expiration": "^6.0.2",
+    "workbox-precaching": "^6.0.2",
     "workbox-routing": "^6.0.2",
     "workbox-strategies": "^6.0.2"
   },
