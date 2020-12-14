@@ -4,7 +4,9 @@ import html from '@open-wc/rollup-plugin-html';
 import strip from '@rollup/plugin-strip';
 import copy from 'rollup-plugin-copy';
 import replace from "@rollup/plugin-replace";
-import { injectManifest } from 'rollup-plugin-workbox'
+import { injectManifest } from 'rollup-plugin-workbox';
+import alias from "@rollup/plugin-alias";
+import minifyHTML from 'rollup-plugin-minify-html-literals';
 
 export default {
   input: 'index.html',
@@ -14,7 +16,14 @@ export default {
   },
   plugins: [
     resolve(),
+    minifyHTML(),
     html(),
+    alias({
+      entries: [{
+        find: 'lit-html/lib/shady-render.js',
+        replacement: 'node_modules/lit-html/lit-html.js'
+      }]
+    }),
     replace(
       {
         'process.env.NODE_ENV': JSON.stringify('production')
