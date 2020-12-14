@@ -1,5 +1,6 @@
 import { LitElement, css, html, customElement, property } from 'lit-element';
 
+declare var atlas: any;
 
 @customElement('stop-list')
 export class StopList extends LitElement {
@@ -15,9 +16,15 @@ export class StopList extends LitElement {
         padding: 0;
       }
 
+      ul fast-card:nth-child(-n+8) {
+        animation-name: slidein;
+        animation-duration: 300ms;
+      }
+
       fast-card {
           margin-bottom: 12px;
           padding: 12px;
+          width: 100%;
       }
 
       fast-card h3 {
@@ -45,6 +52,17 @@ export class StopList extends LitElement {
         width: 4em;
       }
 
+      @keyframes slidein {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
       @media(prefers-color-scheme: light) {
           fast-card {
             background: white;
@@ -57,12 +75,13 @@ export class StopList extends LitElement {
     super();
   }
 
-  firstUpdated() {
+  async firstUpdated() {
     console.log(this.stops);
   }
 
   render() {
     return html`
+
       <h2>Nearby Stops</h2>
 
       ${this.stops.length > 0 ? html`<ul>

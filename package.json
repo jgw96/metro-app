@@ -16,6 +16,7 @@
   "dependencies": {
     "@pwabuilder/pwainstall": "^1.6.6",
     "@vaadin/router": "^1.7.2",
+    "azure-maps-control": "^2.0.31",
     "lit-element": "^2.4.0"
   },
   "devDependencies": {

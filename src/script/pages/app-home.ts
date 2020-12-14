@@ -33,6 +33,10 @@ export class AppHome extends LitElement {
         padding-top: 0px;
       }
 
+      #welcomeBar fast-button {
+        background: #c01754;
+      }
+
       pwa-install {
         position: absolute;
         bottom: 16px;
@@ -72,11 +76,15 @@ export class AppHome extends LitElement {
   async firstUpdated() {
     const loc = getSavedLoc();
 
-    if (loc) {
+    const geoPerm = await navigator.permissions.query({ name: 'geolocation' })
+    if (geoPerm.state === "granted") {
+      await this.setLocation();
+    }
+    else if (loc) {
       this.gotLocation = true;
       this.location = loc;
 
-     await this.getNearby();
+      await this.getNearby();
     }
   }
 
