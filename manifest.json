@@ -11,6 +11,11 @@
   "prefer_related_applications": false,
   "icons": [
     {
+      "src": "assets/icons/maskable_icon.png",
+      "sizes": "640x640",
+      "purpose":  "maskable"
+    },
+    {
       "src": "assets/icons/icon_512.png",
       "sizes": "512x512"
     },
