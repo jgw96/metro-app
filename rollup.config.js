@@ -14,6 +14,11 @@ export default {
   plugins: [
     resolve(),
     html(),
+    replace(
+      {
+        'process.env.NODE_ENV': JSON.stringify('production')
+      }
+    ),
     terser(),
     strip({
       functions: ['console.log']
@@ -25,7 +30,8 @@ export default {
         { src: 'manifest.json', dest: 'dist/'}
       ]
     }),
-    generateSW({
+    injectManifest({
+      swSrc: 'dev/pwabuilder-sw.js',
       swDest: 'dist/pwabuilder-sw.js',
       globDirectory: 'dist/',
       globPatterns: [
