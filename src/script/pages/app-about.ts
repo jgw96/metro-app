@@ -3,6 +3,7 @@ import { LitElement, css, html, customElement, internalProperty } from 'lit-elem
 import { styleMap } from 'lit-html/directives/style-map';
 
 import { getStopDetails } from '../services/metro';
+import { getSavedLoc } from '../utils/location';
 
 
 @customElement('app-about')
@@ -10,6 +11,7 @@ export class AppAbout extends LitElement {
 
   @internalProperty() details: any | null;
   @internalProperty() intID: string | null = null;
+  @internalProperty() currentLoc: string | null = null;
 
   static get styles() {
     return css`
@@ -88,6 +90,22 @@ export class AppAbout extends LitElement {
           background: white;
         }
       }
+
+      section {
+        animation-name: slidein;
+        animation-duration: 280ms;
+      }
+
+      @keyframes slidein {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
     `;
   }
 
@@ -104,6 +122,8 @@ export class AppAbout extends LitElement {
       console.log(detailsData);
       this.details = detailsData;
     }
+
+    this.currentLoc = await getSavedLoc();
   }
 
   goBack() {
@@ -166,7 +186,11 @@ export class AppAbout extends LitElement {
 
         <div id="toolbar">
           <fast-button @click="${() => this.goBack()}">Back</fast-button>
-          <fast-anchor appearance="button" href="${`/realtime?id=${this.intID}`}" id="realTime">Real-Time Arrivals</fast-anchor>
+
+          <div>
+            <fast-anchor appearance="button" href="${`https://www.google.com/maps/dir/?api=1&origin=${this.currentLoc}&destination=${this.details ? this.details.stop.stopName : null}`}" id="navigate">Directions</fast-anchor>
+            <fast-anchor appearance="button" href="${`/realtime?id=${this.intID}`}" id="realTime">Real-Time Arrivals</fast-anchor>
+          </div>
         </div>
       </div>
     `;
