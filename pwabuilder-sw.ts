@@ -2,7 +2,7 @@ import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
-// import { precacheAndRoute } from 'workbox-precaching';
+import { precacheAndRoute } from 'workbox-precaching';
 
 registerRoute(
   ({ url }) => url.origin === 'https://fonts.googleapis.com' ||
