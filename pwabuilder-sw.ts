@@ -37,4 +37,4 @@ registerRoute(
 );
 
 // @ts-ignore
-// precacheAndRoute(self.__WB_MANIFEST);
+precacheAndRoute(self.__WB_MANIFEST);
