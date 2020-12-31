@@ -2,7 +2,7 @@ import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
-import { precacheAndRoute } from 'workbox-precaching';
+// import { precacheAndRoute } from 'workbox-precaching';
 
 registerRoute(
   ({ url }) => url.origin === 'https://fonts.googleapis.com' ||
@@ -21,7 +21,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.href.includes('https://atlas.microsoft.com/mobility/'),
+  ({ url }) => url.href.includes('atlas.microsoft.com'),
   new StaleWhileRevalidate({
     cacheName: 'offline-data',
     plugins: [
@@ -37,4 +37,4 @@ registerRoute(
 );
 
 // @ts-ignore
-precacheAndRoute(self.__WB_MANIFEST);
+// precacheAndRoute(self.__WB_MANIFEST);

@@ -98,6 +98,14 @@ export class AppRealtime extends LitElement {
         margin-bottom: 0;
       }
 
+      @media(min-width: 800px) {
+        ul {
+          display: grid;
+          grid-template-columns: auto auto auto;
+          grid-gap: 10px;
+        }
+      }
+
       @media(min-width: 900px) {
           #none img {
               height: 20em;

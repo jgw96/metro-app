@@ -76,15 +76,30 @@ export class AppHome extends LitElement {
   async firstUpdated() {
     const loc = getSavedLoc();
 
-    const geoPerm = await navigator.permissions.query({ name: 'geolocation' })
-    if (geoPerm.state === "granted") {
-      await this.setLocation();
-    }
-    else if (loc) {
-      this.gotLocation = true;
-      this.location = loc;
+    console.log('saved loc', loc);
 
-      await this.getNearby();
+    if (loc) {
+      this.location = loc;
+      this.gotLocation = true;
+
+      const cachedStops = sessionStorage.getItem('cachedStops');
+
+      if (cachedStops) {
+        this.nearbyStops = [...cachedStops];
+
+        // update as its important the user is always shown the closest stops
+        await this.getNearby();
+      }
+      else {
+        await this.getNearby();
+      }
+    }
+    else {
+      const geoPerm = await navigator.permissions.query({ name: 'geolocation' });
+
+      if (geoPerm.state === "granted") {
+        await this.setLocation();
+      }
     }
   }
 
@@ -102,6 +117,7 @@ export class AppHome extends LitElement {
   async getNearby() {
     if (this.location) {
       const stops = await getNearbyStops(this.location);
+      sessionStorage.setItem('cachedStops', JSON.stringify(stops));
       console.log('stops', stops)
 
       if (stops && stops.length > 0) {
@@ -127,7 +143,10 @@ export class AppHome extends LitElement {
         ${!this.gotLocation ? html`<div id="welcomeBar">
           <h2>Allow location access to find your local transit options</h2>
           <fast-button @click="${() => this.setLocation()}">Get My Location</fast-button>
-        </div>` : this.nearbyStops ? html`<stop-list .stops="${this.nearbyStops}"></stop-list>` : html`<stop-list></stop-list>`}
+        </div>` : this.nearbyStops ? html`
+        <stop-list .stops="${this.nearbyStops}"></stop-list>` : html`<stop-list></stop-list>
+
+        `}
       
         <pwa-install>Install Metro</pwa-install>
       </div>

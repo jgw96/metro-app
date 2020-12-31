@@ -106,6 +106,14 @@ export class AppAbout extends LitElement {
           opacity: 1;
         }
       }
+
+      @media(min-width: 800px) {
+        ul {
+          display: grid;
+          grid-template-columns: auto auto auto;
+          grid-gap: 10px;
+        }
+      }
     `;
   }
 

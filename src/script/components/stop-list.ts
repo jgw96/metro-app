@@ -71,6 +71,14 @@ export class StopList extends LitElement {
             background: white;
           }
       }
+
+      @media(min-width: 800px) {
+        ul {
+          display: grid;
+          grid-template-columns: auto auto auto;
+          grid-gap: 10px;
+        }
+      }
     `;
   }
 

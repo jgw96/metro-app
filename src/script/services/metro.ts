@@ -5,7 +5,7 @@ export async function getNearbyStops(locationString: string) {
   console.log(idData);
 
   const response = await fetch(
-    `https://atlas.microsoft.com/mobility/transit/nearby/json?api-version=1.0&query=${locationString}&subscription-key=${subKey}&radius=${500}&metroId=${
+    `https://atlas.microsoft.com/mobility/transit/nearby/json?api-version=1.0&query=${locationString}&subscription-key=${subKey}&radius=${800}&metroId=${
       idData.results[0].metroId
     }`
   );
