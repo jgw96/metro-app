@@ -77,6 +77,7 @@ export class AppRealtime extends LitElement {
 
       #toolbar #realTime {
         background: var(--accent-fill-rest);
+        margin-left: 6px;
       }
 
       #none {

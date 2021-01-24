@@ -42,9 +42,13 @@ export class StopList extends LitElement {
         margin-top: 18px;
       }
 
-      fast-card .cardActions fast-anchor {
-        background-color: var(--accent-fill-rest);
+      fast-card .details {
+        
       }
+
+      /*fast-card .cardActions fast-anchor {
+        background-color: var(--accent-fill-rest);
+      }*/
 
       #loadingCard h3 fast-skeleton {
         height: 2em;
@@ -105,8 +109,10 @@ export class StopList extends LitElement {
                   <fast-card @click="${() => this.doDetails(`/about?id=${stop.id}`)}">
                     <h3>${stop.objectDetails.stopName}</h3>
 
+                    <p class="details">Agency: ${stop.objectDetails.mainAgencyName}</p>
+
                     <div class="cardActions">
-                      <fast-anchor .href="${`/about?id=${stop.id}`}" appearance="button">Details</fast-anchor>
+                      <fast-anchor .href="${`/about?id=${stop.id}`}">Details</fast-anchor>
                     </div>
                   </fast-card>
                 `

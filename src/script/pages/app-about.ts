@@ -70,6 +70,7 @@ export class AppAbout extends LitElement {
 
       #toolbar #realTime {
         background: var(--accent-fill-rest);
+        margin-left: 6px;
       }
 
       fast-skeleton {
