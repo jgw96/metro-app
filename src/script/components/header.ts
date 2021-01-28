@@ -1,10 +1,8 @@
-import { LitElement, css, html, customElement, property } from 'lit-element';
+import { LitElement, css, html, customElement, property } from "lit-element";
 
-
-@customElement('app-header')
+@customElement("app-header")
 export class AppHeader extends LitElement {
-
-  @property({ type: String }) title: string = 'Metro';
+  @property({ type: String }) title: string = "Metro";
 
   static get styles() {
     return css`
@@ -26,7 +24,11 @@ export class AppHeader extends LitElement {
         font-weight: bold;
       }
 
-      @media(prefers-color-scheme: light) {
+      ion-icon {
+        font-size: 1.8em;
+      }
+
+      @media (prefers-color-scheme: light) {
         header h1 {
           color: #c01754;
         }
@@ -42,10 +44,29 @@ export class AppHeader extends LitElement {
     super();
   }
 
+  async share() {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Metro",
+          text: "Check this out",
+          url: location.href,
+        });
+      }
+      catch (err) {
+        console.error("Sharing failed", err);
+      }
+    }
+  }
+
   render() {
     return html`
       <header>
         <h1>${this.title}</h1>
+
+        <fast-button @click="${() => this.share()}" appearance="stealth">
+          <ion-icon name="share-outline"></ion-icon>
+        </fast-button>
       </header>
     `;
   }

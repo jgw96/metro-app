@@ -10,6 +10,10 @@ export class StopList extends LitElement {
 
   static get styles() {
     return css`
+      h2 {
+        font-size: 2em;
+      }
+      
       ul {
         list-style-type: none;
         list-style: none;

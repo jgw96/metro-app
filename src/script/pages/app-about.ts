@@ -1,6 +1,5 @@
 import { Router } from '@vaadin/router';
 import { LitElement, css, html, customElement, internalProperty } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
 
 import { getStopDetails } from '../services/metro';
 import { getSavedLoc } from '../utils/location';
@@ -46,6 +45,8 @@ export class AppAbout extends LitElement {
         box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))), 0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));
         padding: 12px;
         margin-top: 12px;
+
+        background: var(--neutral-fill-rest);
       }
 
       li h4 {
@@ -161,14 +162,12 @@ export class AppAbout extends LitElement {
               <h3>Lines</h3>
 
               <ul>
-                ${this.details.lineGroups.map((line: any) => {
+                ${this.details.lines.map((line: any) => {
       if (line) {
         return html`
-                        <li @click="${() => this.lineDetails(line.lineGroupId)}" style=${styleMap({
-          background: `#${line.color}`
-        })}>
+                        <li @click="${() => this.lineDetails(line.lineGroupId)}">
                           <h4>${line.lineNumber}</h4>
-                          <span>Destination: ${line.caption1}</span>
+                          <span>Destination: ${line.lineDestination}</span>
                         </li>
                       `
       }
