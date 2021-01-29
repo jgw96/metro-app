@@ -12,9 +12,13 @@ export class AppHeader extends LitElement {
         align-items: center;
         padding-left: 16px;
         padding-right: 16px;
-        background: var(--app-color-primary);
+        background: rgba(24, 24, 24, 0.81);
+        backdrop-filter: blur(10px);
         color: white;
         height: 3.6em;
+
+        position: sticky;
+        top: 0;
       }
 
       header h1 {
@@ -28,6 +32,13 @@ export class AppHeader extends LitElement {
         font-size: 1.8em;
       }
 
+      @media (prefers-color-scheme: dark) {
+        position: sticky;
+        top: 0;
+        background: rgba(24, 24, 24, 0.81);
+        backdrop-filter: blur(10px);
+      }
+
       @media (prefers-color-scheme: light) {
         header h1 {
           color: #c01754;
@@ -35,6 +46,10 @@ export class AppHeader extends LitElement {
 
         header {
           background: white;
+        }
+
+        fast-button ion-icon {
+          color: black;
         }
       }
     `;

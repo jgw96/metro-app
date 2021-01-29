@@ -46,6 +46,10 @@ export class StopList extends LitElement {
         margin-top: 18px;
       }
 
+      fast-card .cardActions fast-anchor {
+        background: var(--accent-fill-rest);
+      }
+
       fast-card .details {
         
       }
