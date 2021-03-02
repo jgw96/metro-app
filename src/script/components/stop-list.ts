@@ -91,6 +91,12 @@ export class StopList extends LitElement {
           grid-gap: 10px;
         }
       }
+
+      @media(min-width: 1000px) {
+        ul {
+          max-width: 70vw;
+        }
+      }
     `;
   }
 

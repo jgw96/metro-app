@@ -22,6 +22,21 @@ export const getLocation = (): Promise<string> => {
   });
 };
 
+export const updateSavedLoc = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    try {
+      navigator.geolocation.getCurrentPosition(async (pos: any) => {
+        const location = `${pos.coords.latitude},${pos.coords.longitude}`;
+        sessionStorage.setItem("location", location);
+        resolve(location);
+      });
+    } catch (err) {
+      console.error(err);
+      reject(err);
+    }
+  })
+}
+
 export const getSavedLoc = () => {
   const savedLoc = sessionStorage.getItem("location");
   

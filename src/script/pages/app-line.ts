@@ -112,6 +112,17 @@ export class AppLine extends LitElement {
           }
       }
 
+      @media(min-width: 1000px) {
+        ul {
+          max-width: 70vw;
+        }
+
+        #toolbar {
+          bottom: initial;
+          top: 0;
+        }
+      }
+
       @media(prefers-color-scheme: light) {
         li {
           color: black;

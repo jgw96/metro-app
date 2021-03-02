@@ -5,7 +5,7 @@ import '@pwabuilder/pwainstall';
 import { getNearbyStops } from '../services/metro';
 
 import '../components/stop-list';
-import { getLocation, getSavedLoc } from '../utils/location';
+import { getLocation, getSavedLoc, updateSavedLoc } from '../utils/location';
 
 @customElement('app-home')
 export class AppHome extends LitElement {
@@ -49,6 +49,13 @@ export class AppHome extends LitElement {
         cursor: pointer;
       }
 
+      @media(min-width: 1000px) {
+        #list-wrapper {
+          display: flex;
+          justify-content: flex-start;
+        }
+      }
+
       @media(min-width: 1200px) {
         #welcomeCard, #infoCard {
           width: 40%;
@@ -82,17 +89,11 @@ export class AppHome extends LitElement {
       this.location = loc;
       this.gotLocation = true;
 
-      const cachedStops = sessionStorage.getItem('cachedStops');
+      await this.getNearby();
 
-      if (cachedStops) {
-        this.nearbyStops = [...cachedStops];
+      this.location = await updateSavedLoc();
 
-        // update as its important the user is always shown the closest stops
-        await this.getNearby();
-      }
-      else {
-        await this.getNearby();
-      }
+      await this.getNearby();
     }
     else {
       const geoPerm = await navigator.permissions.query({ name: 'geolocation' });
@@ -117,8 +118,6 @@ export class AppHome extends LitElement {
   async getNearby() {
     if (this.location) {
       const stops = await getNearbyStops(this.location);
-      sessionStorage.setItem('cachedStops', JSON.stringify(stops));
-      console.log('stops', stops)
 
       if (stops && stops.length > 0) {
         this.nearbyStops = [...stops];
@@ -144,7 +143,7 @@ export class AppHome extends LitElement {
           <h2>Allow location access to find your local transit options</h2>
           <fast-button @click="${() => this.setLocation()}">Get My Location</fast-button>
         </div>` : this.nearbyStops ? html`
-        <stop-list .stops="${this.nearbyStops}"></stop-list>` : html`<stop-list></stop-list>
+        <div id="list-wrapper"><stop-list .stops="${this.nearbyStops}"></stop-list></div>` : html`<stop-list></stop-list>
 
         `}
       

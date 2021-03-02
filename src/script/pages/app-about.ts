@@ -1,20 +1,23 @@
-import { Router } from '@vaadin/router';
-import { LitElement, css, html, customElement, internalProperty } from 'lit-element';
+import { Router } from "@vaadin/router";
+import {
+  LitElement,
+  css,
+  html,
+  customElement,
+  internalProperty,
+} from "lit-element";
 
-import { getStopDetails } from '../services/metro';
-import { getSavedLoc } from '../utils/location';
+import { getStopDetails } from "../services/metro";
+import { getSavedLoc } from "../utils/location";
 
-
-@customElement('app-about')
+@customElement("app-about")
 export class AppAbout extends LitElement {
-
   @internalProperty() details: any | null;
   @internalProperty() intID: string | null = null;
   @internalProperty() currentLoc: string | null = null;
 
   static get styles() {
     return css`
-
       section {
         display: flex;
         flex-direction: column;
@@ -42,7 +45,10 @@ export class AppAbout extends LitElement {
 
       li {
         border-radius: calc(var(--corner-radius) * 1px);
-        box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))), 0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));
+        box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
+            rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))),
+          0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px))
+            rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));
         padding: 12px;
         margin-top: 12px;
 
@@ -83,7 +89,11 @@ export class AppAbout extends LitElement {
         width: 3em;
       }
 
-      @media(prefers-color-scheme: light) {
+      #skeleton-section {
+        max-width: 70vw;
+      }
+
+      @media (prefers-color-scheme: light) {
         li {
           color: white;
         }
@@ -109,11 +119,22 @@ export class AppAbout extends LitElement {
         }
       }
 
-      @media(min-width: 800px) {
+      @media (min-width: 800px) {
         ul {
           display: grid;
           grid-template-columns: auto auto auto;
           grid-gap: 10px;
+        }
+      }
+
+      @media (min-width: 1000px) {
+        ul {
+          max-width: 70vw;
+        }
+
+        #toolbar {
+          bottom: initial;
+          top: 0;
         }
       }
     `;
@@ -125,7 +146,7 @@ export class AppAbout extends LitElement {
 
   async firstUpdated() {
     const search = new URLSearchParams(location.search);
-    this.intID = search.get('id');
+    this.intID = search.get("id");
 
     if (this.intID) {
       const detailsData = await getStopDetails(this.intID);
@@ -142,62 +163,66 @@ export class AppAbout extends LitElement {
 
   lineDetails(id: string) {
     console.log(id);
-    Router.go(`/linedetails?id=${id}`)
+    Router.go(`/linedetails?id=${id}`);
   }
 
   render() {
     return html`
       <div>
-        ${this.details ? html`
-            <h2>${this.details.stop.stopName}</h2>
+        ${this.details
+          ? html`
+              <h2>${this.details.stop.stopName}</h2>
 
-            <section>
-              <h3 id="detailsHeader">Details</h3>
+              <section>
+                <h3 id="detailsHeader">Details</h3>
 
-              <span>Agency: ${this.details.stop.mainAgencyName}</span>
-              <span>Type: ${this.details.stop.mainTransitType}</span>
-            </section>
+                <span>Agency: ${this.details.stop.mainAgencyName}</span>
+                <span>Type: ${this.details.stop.mainTransitType}</span>
+              </section>
 
-            <section>
-              <h3>Lines</h3>
+              <section>
+                <h3>Lines</h3>
 
-              <ul>
-                ${this.details.lines.map((line: any) => {
-      if (line) {
-        return html`
-                        <li @click="${() => this.lineDetails(line.lineGroupId)}">
+                <ul>
+                  ${this.details.lines.map((line: any) => {
+                    if (line) {
+                      return html`
+                        <li
+                          @click="${() => this.lineDetails(line.lineGroupId)}"
+                        >
                           <h4>${line.lineNumber}</h4>
                           <span>Destination: ${line.lineDestination}</span>
                         </li>
-                      `
-      }
-      else {
-        return null;
-      }
-    })
-        }
-              </ul>
-            </section>
-            
-
-          ` : html`
-          <h2><fast-skeleton shimmer shape="rect"></fast-skeleton></h2>
-
-          <section>
-              <h3 id="detailsHeader"><fast-skeleton shimmer shape="rect"></fast-skeleton></h3>
-
-              <span><fast-skeleton shimmer shape="rect"></fast-skeleton></span>
-              <span><fast-skeleton shimmer shape="rect"></fast-skeleton></span>
-            </section>
-          `
-      }
+                      `;
+                    } else {
+                      return null;
+                    }
+                  })}
+                </ul>
+              </section>
+            `
+          : null}
 
         <div id="toolbar">
           <fast-button @click="${() => this.goBack()}">Back</fast-button>
 
           <div>
-            <fast-anchor appearance="button" href="${`https://www.google.com/maps/dir/?api=1&origin=${this.currentLoc}&destination=${this.details ? this.details.stop.stopName : null}`}" id="navigate">Directions</fast-anchor>
-            <fast-anchor appearance="button" href="${`/realtime?id=${this.intID}`}" id="realTime">Real-Time Arrivals</fast-anchor>
+            <fast-anchor
+              appearance="button"
+              href="${`https://www.google.com/maps/dir/?api=1&origin=${
+                this.currentLoc
+              }&destination=${
+                this.details ? this.details.stop.stopName : null
+              }`}"
+              id="navigate"
+              >Directions</fast-anchor
+            >
+            <fast-anchor
+              appearance="button"
+              href="${`/realtime?id=${this.intID}`}"
+              id="realTime"
+              >Real-Time Arrivals</fast-anchor
+            >
           </div>
         </div>
       </div>
