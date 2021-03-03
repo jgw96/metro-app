@@ -1,0 +1,5 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target" : { "namespace": "android_app", "package_name": "net.azurestaticapps.ashy_glacier_0e5cc771e.twa",
+                   "sha256_cert_fingerprints": ["4B:38:A2:9A:AE:67:40:0C:FE:26:2F:86:02:7F:52:33:8C:B5:27:E5:55:5A:FD:50:E8:FF:F1:71:AC:1D:EC:C0"] }
+    }]
